@@ -3,6 +3,7 @@ function ydot = rocket_ode(t,y)
 %      pitch angle, pitch rate, side range, side velocity, roll angle, roll
 %      rate, yaw angle, yaw rate]
 
+% Hello world
 
 %
 % wind components (m/s)
