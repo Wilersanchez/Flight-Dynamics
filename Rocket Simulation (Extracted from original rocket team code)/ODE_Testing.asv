@@ -2,6 +2,7 @@
 % that omits certain parameters
 clc; clear;
 
+
 %
 % wind components (m/s)
 %
