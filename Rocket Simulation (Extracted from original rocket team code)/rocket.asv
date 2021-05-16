@@ -1,5 +1,7 @@
 clc; clear; close all;
 
+
+
 %
 % Initialize time (s), thrust (N), propellant mass (g), angle of attack (deg), and aerodynamic
 % coefficients data for Aerotech L1150 and NACA 0012
@@ -42,7 +44,7 @@ windv = 0;
 
 % 
 % %
-% % Simulate launch for wind=10 m/s
+% % Simulate launch for wind = 10 m/s
 % % Use monte carlo method to analyze the effects of gusts on the apogee of
 % % the rocket. Sensitivity analysis can depict how prone the rocket is to
 % % wind. We can identify how we can improve on this to minimize the effect
