@@ -70,8 +70,8 @@ opts = odeset('stats','on','reltol',1.e-4);
 %
 figure(1)
 plot(y0(:,1),-y0(:,2),'k',y1(:,1),-y1(:,2),'r',y2(:,1),-y2(:,2),'b' ...
-    ,y3(:,1),-y3(:,2),'g',y4(:,1),-y4(:,2),'p' ...
-    ,y5(:,1),-y5(:,2),'o',y6(:,1),-y6(:,2),'y');
+    ,y3(:,1),-y3(:,2),'g',y4(:,1),-y4(:,2),'c' ...
+    ,y5(:,1),-y5(:,2),'m',y6(:,1),-y6(:,2),'y');
 xlabel('Downrange (ft)');
 ylabel('Altitude (ft)');
 legend('ODE45','ODE23','ODE113','ODE15s','ODE23s','ODE23t','ODE23tb');
@@ -81,8 +81,8 @@ legend('ODE45','ODE23','ODE113','ODE15s','ODE23s','ODE23t','ODE23tb');
 %
 figure(2)
 plot(t0,y0(:,3),'k',t1,y1(:,3),'r',t2,y2(:,3),'b' ...
-    ,y3(:,1),-y3(:,2),'g',y4(:,1),-y4(:,2),'p' ...
-    ,y5(:,1),-y5(:,2),'o',y6(:,1),-y6(:,2),'y');
+    ,y3(:,1),-y3(:,2),'g',y4(:,1),-y4(:,2),'c' ...
+    ,y5(:,1),-y5(:,2),'m',y6(:,1),-y6(:,2),'y');
 xlabel('Time (s)');
 ylabel('Forward Velocity (m/s)');
 legend('ODE45','ODE23','ODE113','ODE15s','ODE23s','ODE23t','ODE23tb');
