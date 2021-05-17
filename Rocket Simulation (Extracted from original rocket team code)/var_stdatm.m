@@ -69,13 +69,13 @@ elseif h_atm(2) < h <= h_atm(3)
     i = 3; 
     Tf = T(i-1) + a(i)*(h - h_atm(i-1));
     rhof = rho(i-1)*(Tf/T(i-1))^((-g/(a(i-1)*R))-1);
-    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i)*R))-1));
+    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i-1)*R))-1));
     
 elseif  h_atm(3) < h <= h_atm(4)
     i = 4; 
     Tf = T(i-1) + a(i)*(h - h_atm(i-1)); 
     rhof = rho(i-1)*(Tf/T(i-1))^((-g/(a(i-1)*R))-1);
-    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i)*R))-1));
+    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i-1)*R))-1));
     
 elseif h_atm(4) < h <= h_atm(5)
     i = 5; 
@@ -87,13 +87,13 @@ elseif h_atm(5) < h <= h_atm(6)
     i = 6; 
     Tf = T(i-1) + a(i)*(h - h_atm(i-1));  
     rhof = rho(i-1)*(Tf/T(i-1))^((-g/(a(i-1)*R))-1); 
-    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i)*R))-1));  
+    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i-1)*R))-1));  
     
 elseif h_atm(6) < h <= h_atm(7)
     i = 7; 
     Tf = T(i-1) + a(i)*(h - h_atm(i-1)); 
     rhof = rho(i-1)*(Tf/T(i-1))^((-g/(a(i-1)*R))-1); 
-    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i)*R))-1));
+    Pf = P(i-1)*((Tf/T(i-1)))^(((-g/(a(i-1)*R))-1));
     
 end    
 end
