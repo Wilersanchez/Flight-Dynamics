@@ -12,7 +12,7 @@ global CLfindata1;
 global CLfindata2;
 global CDfindata;
 global bdp;                         % Barrowman design parameters
-bdp = readmatrix('Cp_MinieMagg.xls','Range','B1:B16');
+bdp = readmatrix('Cp_MinieMagg.csv');
 tdata = csvread('Simulation Thrust.csv', 0, 0, [0 0 97 0]);
 Tdata = csvread('Simulation Thrust.csv', 0, 1, [0 1 97 1]);
 mdata = csvread('Simulation Propellant Mass.csv', 0, 1, [0 1 97 1]);
