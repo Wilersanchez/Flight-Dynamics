@@ -3,7 +3,7 @@ function ydot = rocket_ode(t,y)
 %      pitch angle, pitch rate, side range, side velocity, roll angle, roll
 %      rate, yaw angle, yaw rate]
 
-% Hello world
+% TEST
 
 %
 % wind components (m/s)
@@ -15,16 +15,26 @@ global windv;
 %
 % define constants
 %
-g = 9.80665;                    % gravitational acceleration (m/s^2) (assume constant for all altitudes)
+g = 9.80665;                % gravitational acceleration (m/s^2) (assume constant for all altitudes)
 [rho,temp,pressure] = var_stdatm(-y(2));  % Variable density, temperature, and pressure of air
-% xcp = 2.66;                     % distance from nose to center of pressure (m)
+
+%
+% Barrowman rocket properties
 % Using the minnie_mag rocket as the design for the barrowman rocket.
 % https://locprecision.com/product/minie-mag/
-xcp = barrowman_design(bdp(1:16)');
-xcg = 2.32;                     % distance from nose to center of gravity (m)
-I = 23.499;                     % moment of inertia (kg*m^2) (assume constant)
-dfus = 0.14;                    % diameter of fuselage (m) 
-mMinusPropellant = 14.659;      % mass of rocket without propellant (kg)
+global bdp;
+bdp(1:13) = bdp(1:13).*0.0254;  % inches to meters
+xcp = barrowman_design(bdp(1),bdp(2),bdp(3),bdp(4),bdp(5),bdp(6),bdp(7),bdp(8), ...
+    bdp(9),bdp(10),bdp(11),bdp(12),bdp(13),bdp(14),bdp(15),bdp(16),bdp(17));
+xcg = 0.5;
+dfus = 2*bdp(11);
+
+% IREC rocket properties 
+xcp = 2.66;                 % distance from nose to center of pressure (m)
+xcg = 2.32;                 % distance from nose to center of gravity (m)
+I = 23.499;                 % moment of inertia (kg*m^2) (assume constant)
+dfus = 0.14;                % diameter of fuselage (m) 
+mMinusPropellant = 14.659;  % mass of rocket without propellant (kg)
 
 %
 % define fin planform dimensions (m)
