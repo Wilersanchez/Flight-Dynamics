@@ -17,7 +17,10 @@ global windv;
 %
 g = 9.80665;                    % gravitational acceleration (m/s^2) (assume constant for all altitudes)
 [rho,temp,pressure] = var_stdatm(-y(2));  % Variable density, temperature, and pressure of air
-xcp = 2.66;                     % distance from nose to center of pressure (m)
+% xcp = 2.66;                     % distance from nose to center of pressure (m)
+% Using the minnie_mag rocket as the design for the barrowman rocket.
+% https://locprecision.com/product/minie-mag/
+xcp = barrowman_design(bdp(1:16)');
 xcg = 2.32;                     % distance from nose to center of gravity (m)
 I = 23.499;                     % moment of inertia (kg*m^2) (assume constant)
 dfus = 0.14;                    % diameter of fuselage (m) 

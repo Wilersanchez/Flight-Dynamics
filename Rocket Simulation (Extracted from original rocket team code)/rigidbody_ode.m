@@ -1,8 +1,9 @@
 function ydot = rigidbody_ode(t,y)
-% Add launch rail to launch rocket from 0 to 180 degrees
 % y = [downrange distance, -altitude, forward velocity, transverse
 % velocity, side velocity, side range, pitch angle, pitch rate, roll angle,
 % roll rate, yaw angle, yaw rate]
+
+% Add launch rail to launch rocket from 0 to 180 degrees
 
 %
 % wind components (m/s)
