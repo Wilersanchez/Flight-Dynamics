@@ -33,14 +33,14 @@ global windh;
 %
 windh = 0;
 windv = 0;
-[t0,y0] = ode113(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
+[t0,y0] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
 
 %
 % Simulate launch for wind=10 m/s
 %
-windh = 10;
+windh = 1;
 windv = 0;
-[t1,y1] = ode113(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
+[t1,y1] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
 
 % 
 % %
