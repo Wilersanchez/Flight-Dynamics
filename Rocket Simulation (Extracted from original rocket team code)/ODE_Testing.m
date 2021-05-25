@@ -7,7 +7,7 @@ clc; clear;
 %
 global windh;
 global windv;
-windh = 10;
+windh = 5;
 windv = 0;
 
 [t0,y0] = ode45(@rocket_ode,[0 10],[0 0 0 0 pi/2 0]);

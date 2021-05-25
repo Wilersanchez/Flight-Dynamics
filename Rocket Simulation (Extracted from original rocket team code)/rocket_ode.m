@@ -32,7 +32,7 @@ dfus = 2*bdp(11);
 % IREC rocket properties 
 xcp = 2.66;                 % distance from nose to center of pressure (m)
 xcg = 2.32;                 % distance from nose to center of gravity (m)
-I = 230.499;                 % moment of inertia (kg*m^2) (assume constant)
+I = 230.499;                % moment of inertia (kg*m^2) (assume constant)
 dfus = 0.14;                % diameter of fuselage (m) 
 mMinusPropellant = 14.659;  % mass of rocket without propellant (kg)
 
@@ -58,10 +58,11 @@ S = fin_span * fin_chord;
 u = y(3) + windh*cos(y(5)) + windv*sin(y(5)); %forward velocity
 w = y(4) + windh*sin(y(5)) + windv*cos(y(5)); %transverse velocity
 
+
 %
 % compute total velocity (m/s)
 %
-V = sqrt(u.^2 + w.^2);
+V = sqrt(u^2 + w^2);
 V_wind = sqrt(windh.^2 + windv.^2);
 
 %

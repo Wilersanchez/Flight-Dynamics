@@ -7,7 +7,7 @@ R2(theta) = [cos(theta) 0 sin(theta); 0 1 0;-sin(theta) 0 cos(theta)];
 % Yaw transformation matrix
 R3(psi) = [cos(psi) -sin(psi) 0; sin(psi) cos(psi) 0; 0 0 1];
 
-% 3-1-3
+% 3-1-3 
 p = [u;v;w];
 pdot = R3(-psi)*R2(-theta)*R1(-phi)*p;
 
