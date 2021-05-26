@@ -38,7 +38,7 @@ windv = 0;
 %
 % Simulate launch for wind=10 m/s
 %
-windh = 1;
+windh = 4;
 windv = 0;
 [t1,y1] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
 

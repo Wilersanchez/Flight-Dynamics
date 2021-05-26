@@ -42,12 +42,8 @@ if h < 1000
     sigma_w = 0.1*W_20feet;
     sigma_u = (sigma_w)/((0.177 + 0.000823*h)^0.4);
     sigma_v = sigma_u;
-    
 elseif 1000 <= h < 2000
-    % Values are linearly interpolated
     
 elseif 2000 <= h
-    L_w = 1750/2;
-    L_u = 1750;
-    L_v = 1750/2;
+    
 end

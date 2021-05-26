@@ -70,7 +70,7 @@ V_wind = sqrt(windh.^2 + windv.^2);
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
 %
 if u ~= 0
-    alpha = atan(w + V_wind*sin(y(6))/u + V_wind*cos(y(6)));
+    alpha = atan((w + V_wind*sin(y(6)))/(u + V_wind*cos(y(6))));
 else
     alpha = pi/2;
 end
