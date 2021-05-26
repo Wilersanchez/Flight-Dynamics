@@ -1,23 +1,31 @@
-% Wind and gust analysis for the rocket
+% Wind and gust profiles for the rocket
 % WORK IN PROGRESS
 
-% Input: [N] number of simulations
+% Input: [N] number of simulations, Turbulence severity [Light,
+% Moderate,Severe], 
 % Output: 
-
-%
-% Initializing
 %
 
-global windh
-global windv
 
-function [V_wind] = gust_profile(Fs,constwindh,constwindv)
+
+function [V_wind] = gust_profile(Fs,constwindh,constwindv,severity)
 %
 % INITIALIZING
 %
-sigma_u = 0;
-L_u = 0;
+sigma_u = 0;        % Turbulence intensity
+L_u = 0;            % Turbulence scale length
 
+%
+%
+%
+
+%
+% TURBULENCE CLASSIFICATION
+%
+if 'light' == severity; W_20ft = 15; % Knots
+elseif 'moderate' == severity; W_20ft = 30; % Knots
+elseif 'severe' == severity; W_20ft = 45; % Knots
+end
 
 
 %
@@ -42,8 +50,19 @@ if h < 1000
     sigma_w = 0.1*W_20feet;
     sigma_u = (sigma_w)/((0.177 + 0.000823*h)^0.4);
     sigma_v = sigma_u;
+    
 elseif 1000 <= h < 2000
+    % Values are linearly interpolated
     
 elseif 2000 <= h
+    % Predetermined values for the dryden form
+    L_w = 1750/2;           % [ft]
+    L_u = 1750;
+    L_v = 1750/2;
     
+    sigma_w = 0.1*W_20feet; % Calculated using probability of exceedance
+    sigma_u = sigma_w;
+    sigma_v = sigma_u;
+    
+end
 end
