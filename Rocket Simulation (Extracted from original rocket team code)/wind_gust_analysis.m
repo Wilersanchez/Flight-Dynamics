@@ -30,6 +30,15 @@ f = (0:n-1)*fs/n;
 Y(1) = [];f(1) = [];
 
 %
+% TRANSFER FUNCTION
+%
+A = (2*sqrt(3)/V)*(sigma*sqrt((2*L)/(pi/V)));
+B = sigma*sqrt((2*L)/(pi/V));
+C = (2*L/V)^2; D = (4*L)/V;
+
+sys = tf([A B],[C D 1]);
+
+%
 % TURBULENCE CLASSIFICATION
 %
 if 'light' == severity; W_20ft = 15; % Knots
