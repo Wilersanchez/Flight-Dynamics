@@ -63,6 +63,10 @@ w = y(4) + windh*sin(y(5)) + windv*cos(y(5)); %transverse velocity
 % compute total velocity (m/s)
 %
 V = sqrt(u^2 + w^2);
+
+%
+% dryden gust model test
+%
 V_wind = sqrt(windh.^2 + windv.^2);
 
 %

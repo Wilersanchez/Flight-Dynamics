@@ -1,5 +1,6 @@
-from pyfly import PyFly
+import pyfly
 from pid_controller import PIDController
+from pyfly.pyfly import PyFly
 
 sim = PyFly("pyfly_config.json", "x8_param.mat")
 sim.seed(0)
