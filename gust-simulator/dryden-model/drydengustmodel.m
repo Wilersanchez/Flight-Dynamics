@@ -63,7 +63,7 @@ elseif 1000*(1-er) < (h*m2f) < 1000*(1+er)
     L_u = h;
     L_v = h/2;
     
-% MED TO HIGH ALTITUDE
+% MED TO HIGH ALTITUDE %Figure out interpolation
 elseif 1000*(1+er) <= (h*m2f) < 2000
     sigma_w = 0.1*W_20feet;
     sigma_u = sigma_w;
