@@ -43,6 +43,7 @@ end
 % L = turbulence scale length
 %
 
+% For MIL-HDBK-1797 and MIL-HDBK-1797B tables
 % LOW ALTITUDE
 if (h*m2f) < 1000
     sigma_w = 0.1*W_20feet;
