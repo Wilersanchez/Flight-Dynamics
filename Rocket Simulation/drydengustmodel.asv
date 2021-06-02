@@ -142,4 +142,5 @@ Vwind_v = C2*integral(Vwind_vdot) + D2*V;
 Vwind_wdot = A3*t + B3*V;
 Vwind_w = C3*integral(Vwind_wdot) + D3*V;
 
+
 end
