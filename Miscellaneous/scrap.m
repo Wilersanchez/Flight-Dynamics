@@ -22,3 +22,22 @@ xlabel('Frequency (Hz)');ylim([0 0.3])
 
 figure(2)
 plot(tspan,y)
+
+%
+LINEAR w COMPONENT
+A = sigma_w*sqrt((2*L_w)/(pi*V));
+B = 2*sqrt(3)*L_w/V;
+C = (2*L_w/V)^2; D = (4*L_w)/V;
+
+H_w = tf([A B],[C D 1]);
+
+
+% % checks whether the velocities are NaN or zero and sets them equal to
+% % themselves. subject to change.
+% if isnan(V_u) || isnan(V_v)
+%     V_u = 0;
+%     V_v = 0;
+% else
+y_w = ilaplace((A*s+B)/(C*(s^2)+B*s+1));
+y_w = real(double(subs(y_w)));
+
