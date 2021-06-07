@@ -76,7 +76,6 @@ V_wind = sqrt(windh.^2 + windv.^2);
 % [Vwindu,Vwindv,Vwindw] = drydengustmodel(-y(2),V,'light',t);
 % V_wind = sqrt(Vwindu^2 + Vwindv^2);
 
-
 % compute angle of attack (radians)
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
 %
