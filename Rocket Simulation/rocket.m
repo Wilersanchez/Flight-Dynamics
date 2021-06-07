@@ -51,7 +51,7 @@ global windh;
 %
 windh = 0;
 windv = 0;
-[t0,y0] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
+[t0,y0] = ode45(@rocket_ode,[0 30],[0 0 0 0 pi/2 0]);
 
 %
 % Simulate launch for wind=10 m/s
@@ -106,7 +106,7 @@ disp(['Apogee with wind v = 20 m/s ',num2str(apogee2),' (ft)']);
 %
 % Only take data until apogee
 %
-
+% 
 [~,ApogeeIndex0] = min(y0(:,2));
 y0 = y0(1:ApogeeIndex0,:);
 t0 = t0(1:ApogeeIndex0,:);
@@ -159,3 +159,11 @@ plot(t0,y0(:,3),'k',t1,y1(:,3),'r',t2,y2(:,3),'b')
 xlabel('Time (s)');
 ylabel('Forward Velocity (m/s)');
 legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
+
+% %
+% % testing
+% %
+% figure(5)
+% plot(t0,-y0(:,2));
+% xlabel('Time (s)');
+% ylabel('Altitude (ft)');
