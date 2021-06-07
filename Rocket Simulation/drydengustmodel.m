@@ -9,7 +9,6 @@
 % output = V_wind (gust velocity, assume 1d)
 
 function Vwind = drydengustmodel(h,V_u,V_v,intensity,t)
-
 %
 % initializing global variables
 %
@@ -196,33 +195,7 @@ end
 % output wind velocity components
 Vwind = [Vwind_u;Vwind_v];
 
-
 % globally iterating i value for timestep alignments in 'numerically
 % solving diffeq' section ()
 i = i + 1;
-
-H = [H_u;H_v;H_w];
-
-%
-% converting to state space model
-%
-Hss_u = ss(H_u);
-Hss_v = ss(H_v);
-Hss_w = ss(H_w);
-
-% extracting state space data as singular matrices
-[A1,B1,C1,D1] = ssdata(Hss_u);
-[A2,B2,C2,D2] = ssdata(Hss_v);
-[A3,B3,C3,D3] = ssdata(Hss_w);
-
-% solving for wind components using the state space model
-Vwind_udot = A1*t + B1*V;
-Vwind_u = C1*integral(Vwind_udot) + D1*V;
-
-Vwind_vdot = A2*t + B2*V;
-Vwind_v = C2*integral(Vwind_vdot) + D2*V;
-
-Vwind_wdot = A3*t + B3*V;
-Vwind_w = C3*integral(Vwind_wdot) + D3*V;
-
 end
