@@ -20,6 +20,24 @@ alphadata = csvread('NACA 0012 Cl.csv', 0, 3, [0 3 27 3]);
 CLfindata1 = csvread('NACA 0012 Cl.csv', 0, 1, [0 1 27 1]);
 CLfindata2 = csvread('NACA 0012 Cd.csv', 0, 3, [0 3 17 3]);
 CDfindata = csvread('NACA 0012 Cd.csv', 0, 1, [0 1 17 1]);
+global i;
+i = 1;
+global tval;
+tval = 0;
+global v_uoutput;
+global v_uoutputd;
+global v_vinput;
+global v_vinputd;
+global v_output;
+global v_voutputd;
+global v_voutputdd;
+v_uoutput = 0;
+v_uoutputd = 0;
+v_vinput = 0;
+v_vinputd = 0;
+v_output = 0;
+v_voutputd = 0;
+v_voutputdd = 0;
 
 %
 % Define variables for velocity of wind
@@ -59,7 +77,7 @@ gusthm = 5;
 gustvm = 0;
 windh = steadywindh + gusthm;
 windv = steadywindv + gustvm;
-[t2,y2] = ode113(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
+[t2,y2] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0]);
 
 %
 % Convert altitude/velocity from meters to feet

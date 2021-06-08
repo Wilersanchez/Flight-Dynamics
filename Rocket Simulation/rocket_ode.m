@@ -53,10 +53,15 @@ A = pi*(dfus/2)^2;
 S = fin_span * fin_chord;
 
 %
+% dryden gust model test
+%
+V_wind = drydengustmodel(-y(2),y(3),y(4),'light',t);
+
+%
 % compute body-fixed axis velocities (m/s)
 %
-u = y(3) + windh*cos(y(5)) + windv*sin(y(5)); %forward velocity
-w = y(4) + windh*sin(y(5)) + windv*cos(y(5)); %transverse velocity
+u = y(3) + V_wind(1)*cos(y(5)) + V_wind(2)*sin(y(5)); %forward velocity
+w = y(4) + V_wind(1)*sin(y(5)) + V_wind(2)*cos(y(5)); %transverse velocity
 
 
 %
@@ -64,19 +69,18 @@ w = y(4) + windh*sin(y(5)) + windv*cos(y(5)); %transverse velocity
 %
 V = sqrt(u^2 + w^2);
 
-%
+
 % dryden gust model test
 %
 V_wind = sqrt(windh.^2 + windv.^2);
 % [Vwindu,Vwindv,Vwindw] = drydengustmodel(-y(2),V,'light',t);
 % V_wind = sqrt(Vwindu^2 + Vwindv^2);
 
-%
 % compute angle of attack (radians)
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
 %
 if u ~= 0
-    alpha = atan((w + V_wind*sin(y(6)))/(u + V_wind*cos(y(6))));
+    alpha = atan(w/u);
 else
     alpha = pi/2;
 end
