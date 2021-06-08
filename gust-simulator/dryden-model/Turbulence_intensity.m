@@ -1,5 +1,4 @@
 % input = V (airspeed of rocket)
-%         T (final time condition)
 
 function [] = Turbulence_intensity(V)
 %% Solving for turbulence kinetic energy
