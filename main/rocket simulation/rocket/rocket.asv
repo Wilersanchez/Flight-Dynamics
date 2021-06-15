@@ -1,4 +1,4 @@
-clc; clear; close all;
+clc; clear; close all; tic
 
 %
 % Initialize time (s), thrust (N), propellant mass (g), angle of attack (deg), and aerodynamic
@@ -11,8 +11,8 @@ global alphadata;
 global CLfindata1;
 global CLfindata2;
 global CDfindata;
-global bdp;                         % Barrowman design parameters
-bdp = readmatrix('Cp_MinieMagg.csv');
+% global bdp;                         % Barrowman design parameters
+% bdp = readmatrix('Cp_MinieMagg.csv');
 tdata = csvread('Simulation Thrust.csv', 0, 0, [0 0 97 0]);
 Tdata = csvread('Simulation Thrust.csv', 0, 1, [0 1 97 1]);
 mdata = csvread('Simulation Propellant Mass.csv', 0, 1, [0 1 97 1]);
@@ -49,59 +49,37 @@ global windh;
 %
 % Simulate launch for wind=0 m/s
 %
-windh = 0;
+windh = 1;
 windv = 0;
 [t0,y0] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 0 0]);
 
 %
 % Simulate launch for wind=10 m/s
 %
-windh = 5 ;
+windh = 2;
 windv = 0;
-[t1,y1] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 2*pi 2*pi]);
+[t1,y1] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 0 0]);
 
-% 
-% %
-% % Simulate launch for wind = 10 m/s
-% % Use monte carlo method to analyze the effects of gusts on the apogee of
-% % the rocket. Sensitivity analysis can depict how prone the rocket is to
-% % wind. We can identify how we can improve on this to minimize the effect
-% % of wind on the rocket and maximize apogee. 
-% %
-montecarloindex = rand(1000,1);
-% With the assumption of the rocket being launched in gainesville somewhere
-% in the beginnning months of the year.
-steadywindh = 5; steadywindv = 0;
-maxwind = 10; minwind = 2;
-gusthm = 5;
-gustvm = 0;
-windh = steadywindh + gusthm;
-windv = steadywindv + gustvm;
-[t2,y2] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 2*pi 2*pi]);
 
 %
 % Convert altitude/velocity from meters to feet
 
 y0(:,1:4) = y0(:,1:4)/.3048;
 y1(:,1:4) = y1(:,1:4)/.3048;
-y2(:,1:4) = y2(:,1:4)/.3048;
 
 %
 % Convert angles/rates from radians to degrees
 %
 y0(:,5:6) = y0(:,5:6)*180/pi;
 y1(:,5:6) = y1(:,5:6)*180/pi;
-y2(:,5:6) = y2(:,5:6)*180/pi;
 
 %
 % Compute maximum altitude
 %
 [apogee0,index0] = max(-y0(:,2));
 [apogee1,index1] = max(-y1(:,2));
-[apogee2,index2] = max(-y2(:,2));
-disp(['Apogee with wind v = 0  m/s ',num2str(apogee0),' (ft)']);
-disp(['Apogee with wind v = 10 m/s ',num2str(apogee1),' (ft)']);
-disp(['Apogee with wind v = 20 m/s ',num2str(apogee2),' (ft)']);
+disp(['Apogee with wind v = 1  m/s ',num2str(apogee0),' (ft)']);
+disp(['Apogee with wind v = 2 m/s ',num2str(apogee1),' (ft)']);
 
 %
 % Only take data until apogee
@@ -115,47 +93,44 @@ t0 = t0(1:ApogeeIndex0,:);
 y1 = y1(1:ApogeeIndex1,:);
 t1 = t1(1:ApogeeIndex1,:);
 
-[~,ApogeeIndex2] = min(y2(:,2));
-y2 = y2(1:ApogeeIndex2,:);
-t2 = t2(1:ApogeeIndex2,:);
-
 
 %
 % Plot trajectory
 %
 figure(1)
-plot(y0(:,1),-y0(:,2),'k',y1(:,1),-y1(:,2),'r',y2(:,1),-y2(:,2),'b');
+plot(y0(:,1),-y0(:,2),'k',y1(:,1),-y1(:,2),'r');
 xlabel('Downrange (ft)');
 ylabel('Altitude (ft)');
-legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
+legend('no wind','wind v = 10 m/s');
 
 
 %
 % Plot pitch angle
 %
 figure(2)
-plot(t0,y0(:,5),'k',t1,y1(:,5),'r',t2,y2(:,5),'b');
+plot(t0,y0(:,5),'k',t1,y1(:,5),'r');
 xlabel('Time (s)');
 ylabel('Pitch Angle (deg)');
-legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
+legend('no wind','wind v = 10 m/s');
 
 
 %
 % Plot trajectory with time
 %
 figure(3)
-plot3(t0,y0(:,1),-y0(:,2),'k',t1,y1(:,1),-y1(:,2),'r',t2,y2(:,1),-y2(:,2),'b');
+plot3(t0,y0(:,1),-y0(:,2),'k',t1,y1(:,1),-y1(:,2),'r');
 xlabel('Time (s)');
 ylabel('Downrange (ft)');
 zlabel('Altitude (ft)');
-legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
+legend('no wind','wind v = 10 m/s');
 
 
 %
 % Plot velocity
 %
 figure(4)
-plot(t0,y0(:,3),'k',t1,y1(:,3),'r',t2,y2(:,3),'b')
+plot(t0,y0(:,3),'k',t1,y1(:,3),'r')
 xlabel('Time (s)');
 ylabel('Forward Velocity (m/s)');
-legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
+legend('no wind','wind v = 10 m/s');
+toc

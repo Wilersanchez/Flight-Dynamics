@@ -1,4 +1,4 @@
-function [M,rhof] = mach_number(V,T)
+function [M,rhof] = rocket_mach_number(V,T)
 %
 % Defining constants
 %
