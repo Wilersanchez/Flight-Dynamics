@@ -4,7 +4,7 @@
 % INPUT: h altitude (m)
 % OUTPUT: rho density (kg/m^3)
 
-function rhof = var_density(h)
+function rhof = rocket_var_density(h)
 %
 % Defining Constants
 %

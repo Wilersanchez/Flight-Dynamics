@@ -4,7 +4,7 @@
 % INPUT: h altitude (m)
 % OUTPUT: rho density (kg/m^3), T temperature (K), and P pressure (Pa)
 
-function [rhof,Tf,Pf] = var_stdatm(h)
+function [rhof,Tf,Pf] = rocket_var_stdatm(h)
 %
 % Defining Constants
 %

@@ -1,16 +1,11 @@
-% dryden gust model specified for rockets
-%
-% input = dt (sampling time for white noise)
-%         c (relative length of rocket dependent on orientation)
-%         h (altitude of rocket)
-%         V (airspeed of rocket)
-%         intensity (turbelence intensity classified as 'light',
-%         'moderate', or 'severe')
-%
-% output = V_gust (gust velocity, assume 1d)
 
-
-function [Vwind_u,Vwind_v,Vwind_w] = drydengustmodel(h,V,intensity,t)
+h = 100;
+V = 100;
+intensity = 'light';
+dt = 0.01;
+t = 0:dt:10;
+u = ones(size(t));
+u(1) = 0;
 %
 % initialize
 %
@@ -92,10 +87,10 @@ elseif 2000 <= (h*m2f)
     L_u = 1750;
     L_v = 1750/2;
 end   
-
 %
 % transfer function
 %
+syms s 
 
 % LINEAR u COMPONENT
 
@@ -103,6 +98,9 @@ A = sigma_u*sqrt((2*L_u)/(pi*V));
 B = L_u/V;
 
 H_u = tf(A,[B 1]);
+y_u = ilaplace(A/(1+B*s));
+y_u = subs(t);
+double y_u
 
 % LINEAR v COMPONENT
 A = sigma_v*sqrt((2*L_v)/(pi*V));
@@ -110,6 +108,9 @@ B = 2*sqrt(3)*L_v/V;
 C = (2*L_v/V)^2; D = (4*L_v)/V;
 
 H_v = tf([B*A A],[C D 1]);
+y_v = ilaplace((B*A*s+A)/(C*(s^2)+D*s+1));
+y_v = subs(t);
+double y_v
 
 % LINEAR w COMPONENT
 A = sigma_w*sqrt((2*L_w)/(pi*V));
@@ -117,30 +118,28 @@ B = 2*sqrt(3)*L_w/V;
 C = (2*L_w/V)^2; D = (4*L_w)/V;
 
 H_w = tf([A B],[C D 1]);
-
-H = [H_u;H_v;H_w];
-
-%
-% converting to state space model
-%
-Hss_u = ss(H_u);
-Hss_v = ss(H_v);
-Hss_w = ss(H_w);
-
-% extracting state space data as singular matrices
-[A1,B1,C1,D1] = ssdata(Hss_u);
-[A2,B2,C2,D2] = ssdata(Hss_v);
-[A3,B3,C3,D3] = ssdata(Hss_w);
-
-% solving for wind components using the state space model
-Vwind_udot = A1*t + B1*V;
-Vwind_u = C1*integral(Vwind_udot) + D1*V;
-
-Vwind_vdot = A2*t + B2*V;
-Vwind_v = C2*integral(Vwind_vdot) + D2*V;
-
-Vwind_wdot = A3*t + B3*V;
-Vwind_w = C3*integral(Vwind_wdot) + D3*V;
+y_w = ilaplace((A*s+B)/(C*(s^2)+B*s+1));
+y_w = subs(t);
+double y_w
 
 
-end
+Vwind = [y_u;y_v;y_w];
+t1 = linspace(0,10,length(Vwind(:,1)));
+t2 = linspace(0,10,length(Vwind(:,2)));
+t3 = linspace(0,10,length(Vwind(:,3)));
+
+figure(1)
+plot(t1,Vwind(:,1),'Linewidth',2);
+grid
+legend('Velocity of wind in u-component')
+xlabel('time [seconds]'); ylabel('Velocity [m/s]');
+figure(2)
+plot(t2,Vwind(:,2),'Linewidth',2);
+grid
+legend('Velocity of wind in v-component')
+xlabel('time [seconds]'); ylabel('Velocity [m/s]');
+figure(3)
+plot(t3,Vwind(:,3),'Linewidth',2);
+grid
+legend('Velocity of wind in w-component')
+xlabel('time [seconds]'); ylabel('Velocity [m/s]');
