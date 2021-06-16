@@ -13,4 +13,4 @@ u = sqrt(2/3*k);
 U = sqrt(Ux^2 + Uy^2);
 
 I = u/U;
-end
+% input = V (airspeed of rocket)

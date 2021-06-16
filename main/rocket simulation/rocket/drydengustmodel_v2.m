@@ -83,4 +83,3 @@ else
     B = [0;0;0;0];
 end
 dgm_ode = [A B];
-end

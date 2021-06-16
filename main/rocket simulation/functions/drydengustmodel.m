@@ -204,4 +204,3 @@ Vwind = [Vwind_u;Vwind_v];
 % globally iterating i value for timestep alignments in 'numerically
 % solving diffeq' section ()
 i = i + 1;
-end

@@ -140,4 +140,3 @@ dgm_ode(isnan(dgm_ode)) = 0;
     ydot(7,1) = windh;
     ydot(8,1) = windv;
     end
-end

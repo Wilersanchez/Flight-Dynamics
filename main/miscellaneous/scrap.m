@@ -40,4 +40,3 @@ H_w = tf([A B],[C D 1]);
 % else
 y_w = ilaplace((A*s+B)/(C*(s^2)+B*s+1));
 y_w = real(double(subs(y_w)));
-

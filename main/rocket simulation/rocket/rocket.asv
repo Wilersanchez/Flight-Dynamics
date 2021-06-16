@@ -133,4 +133,3 @@ plot(t0,y0(:,3),'k',t1,y1(:,3),'r')
 xlabel('Time (s)');
 ylabel('Forward Velocity (m/s)');
 legend('no wind','wind v = 10 m/s');
-toc
