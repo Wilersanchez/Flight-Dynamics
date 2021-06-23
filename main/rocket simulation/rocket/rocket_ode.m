@@ -122,6 +122,12 @@ W = m*g;
 if y(2) > 1
     y = y*0;
 end
+%
+% generate limited bandwidth noise
+%
+a = -3;
+b = 3;
+r = (a+(b-a)*randn(1,1))*10;
 
 %
 % generate state derivatives
@@ -134,8 +140,8 @@ ydot(5,1) = y(6); % Pitch angle
 ydot(6,1) = -(xcp-xcg)*(L*cos(alpha) + D*sin(alpha))/I; % Pitch rate
 dgm_ode(isnan(dgm_ode)) = 0;
     if ((dgm_ode(2,1) && dgm_ode(2,2)) ~= 0)
-    ydot(7,1) = V_u_rng + (dgm_ode(1,1)/dgm_ode(2,1))*(randn(1,1)/1000) - (1/dgm_ode(2,1))*y(7);
-    ydot(8,1) = V_v_rng + (dgm_ode(1,2)/dgm_ode(2,2))*(randn(1,1)/1000) - (1/dgm_ode(2,2))*y(8);
+    ydot(7,1) = V_u_rng + ((dgm_ode(1,1)/dgm_ode(2,1))*r - (1/dgm_ode(2,1))*y(7));
+    ydot(8,1) = V_v_rng + ((dgm_ode(1,2)/dgm_ode(2,2))*r - (1/dgm_ode(2,2))*y(8));
     else
     ydot(7,1) = windh;
     ydot(8,1) = windv;

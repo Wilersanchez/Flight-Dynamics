@@ -27,21 +27,30 @@ CDfindata = csvread('NACA 0012 Cd.csv', 0, 1, [0 1 17 1]);
 %
 global windv;
 global windh;
-
+t0 = 0;
+tf = 15;
+nsteps = 1000;
+tspan = linspace(t0,tf,nsteps);
 
 %
 % Simulate launch for wind=0 m/s
 %
 windh = 1;
 windv = 0;
-[t0,y0] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 0 0]);
+for i = 1:100
+    [t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0 0]);
+    apogee(i) = max(-y0(:,2));
+end
+apogee(0 == apogee) = nan;
+figure(5)
+histogram(apogee,20);
 
 %
 % Simulate launch for wind=10 m/s
 %
 windh = 9;
 windv = 0;
-[t1,y1] = ode45(@rocket_ode,[0 20],[0 0 0 0 pi/2 0 0 0]);
+[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0 0]);
 
 
 %
