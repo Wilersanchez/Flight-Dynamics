@@ -1,3 +1,5 @@
+%% At low altitude
+clc; clear;
 omega = 20;        % circular frequency
 tspan = [0 10];
 

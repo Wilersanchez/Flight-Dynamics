@@ -1,10 +1,11 @@
+%% At low altitude h < 1000ft
 clc; clear;
 omega = 20;        % circular frequency
 tspan = [0 10];
 
-sigma = .3;        % turbulence intensity
+sigma = 1.5;        % turbulence intensity
 
-Lu = 1;            % turbulence scale length
+Lu = 500;            % turbulence scale length
 
 V = 100;           % velocity
 
