@@ -1,9 +1,7 @@
 function ydot = rocket_ode(t,y)
-% y = [downrange distance, -altitude, forward velocity, transverse velocity,
-%      pitch angle, pitch rate, side range, side velocity, roll angle, roll
-%      rate, yaw angle, yaw rate]
+%OUTPUT: [downrange distance(u),-altitude, forward velocity, transverse
+%         velocity, pitch angle, pitch rate, forward dyrden gust velocity]
 
-% TEST
 
 %% wind components (m/s)
 %
@@ -36,17 +34,17 @@ S = fin_span * fin_chord;
 dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'moderate')));
 
 %% compute body-fixed axis velocities (m/s)
-u = y(3);       %forward velocity
+u = y(3) + y(7)*10000; %forward velocity
 w = y(4);       %transverse velocity
 
 %% compute total velocity (m/s)
 V = sqrt(u^2 + w^2);
-V_u_rng = y(7) + windh; %side range + global wind speed
+V_u_rng = y(7) + windh; %dryden gust velocity + global steady wind speed
 
 %% compute angle of attack (radians)
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
 if u ~= 0
-     alpha = atan((w + V_u_rng*sin(y(6)))/(u + V_u_rng*cos(y(6))));
+     alpha = atan((w)/(u));
 else
      alpha = pi/2;
 end
@@ -58,9 +56,6 @@ CDofus = 0.7;                   % CDo for fuselage
 CDafus = 0.1;                   % CDalpha for fuselage
 
 [CLfin, CDfin] = rocket_fin_coefficients(alpha);    % CL and CD for fins
-
-%% compute lift and drag at this velocity and angle-of-attack
-
 
 %% compute lift using fin and fuselage aerodynamics
 L = .5*rho*V^2*(A*(CLofus + CLafus*(alpha*180/pi))  ...
@@ -91,7 +86,7 @@ end
 %% generate limited bandwidth noise
 a = -2;
 b = 2;
-r = (a+(b-a)*randn(1,1));
+r = (b-a)*rand(1,1)+a;
 
 %% generate state derivatives
 ydot(1,1) = y(3)*cos(y(5)) + y(4)*sin(y(5));                        % Downrange
@@ -102,7 +97,7 @@ ydot(5,1) = y(6);                                                   % Pitch angl
 ydot(6,1) = -(xcp-xcg)*(L*cos(alpha) + D*sin(alpha))/I;             % Pitch rate
 dgm_ode(isnan(dgm_ode)) = 0;                                        % Gust
     if (dgm_ode(2,1) ~= 0)
-    ydot(7,1) = V_u_rng + (((dgm_ode(1,1))*r-y(7)))/(dgm_ode(2,1)*1000);
+    ydot(7,1) =(((dgm_ode(1,1))*r-y(7)))/(dgm_ode(2,1)*1000);
     else
-    ydot(7,1) = windh;
+    ydot(7,1) = 0;
     end
