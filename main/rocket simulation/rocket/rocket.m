@@ -37,14 +37,14 @@ tspan = linspace(t0,tf,nsteps);
 %
 windh = 1;
 windv = 0;
-[t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
+[t0,y0] = ode45(@rocket_ode,tspan,[1 1 1 1 pi/2 1 1]);
 
 %
 % Simulate launch for wind=10 m/s
 %
-windh = 9;
+windh = 900000;
 windv = 0;
-[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
+[t1,y1] = ode45(@rocket_ode,tspan,[1 1 50 25 pi/2 1 1]);
 
 
 %
