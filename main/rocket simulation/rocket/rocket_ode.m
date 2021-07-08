@@ -45,29 +45,27 @@ S = fin_span * fin_chord;
 %
 % dryden gust model test
 %
-dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'light')));
+dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'moderate')));
 
 %
 % compute body-fixed axis velocities (m/s)
 %
-u = y(3);%forward velocity
-w = y(4);%transverse velocity
+u = y(3);       %forward velocity
+w = y(4);       %transverse velocity
 
 %
 % compute total velocity (m/s)
 %
 V = sqrt(u^2 + w^2);
 V_u_rng = y(7) + windh;
-V_v_rng = y(8) + windv;
-V_wind = sqrt(V_u_rng^2 + V_v_rng^2);
 
 % compute angle of attack (radians)
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
 %
 if u ~= 0
-    alpha = atan((w + V_wind*sin(y(6)))/(u + V_wind*cos(y(6))));
+     alpha = atan((w)/(u + V_u_rng*cos(y(6))));
 else
-    alpha = pi/2;
+     alpha = pi/2;
 end
 
 %
@@ -122,27 +120,26 @@ W = m*g;
 if y(2) > 1
     y = y*0;
 end
+
 %
 % generate limited bandwidth noise
 %
-a = -3;
-b = 3;
-r = (a+(b-a)*randn(1,1))*10;
+a = -2;
+b = 2;
+r = (a+(b-a)*randn(1,1));
 
 %
 % generate state derivatives
 %
-ydot(1,1) = y(3)*cos(y(5)) + y(4)*sin(y(5)); % Downrange
-ydot(2,1) = -y(3)*sin(y(5)) + y(4)*cos(y(5)); % -Altitude
-ydot(3,1) = (-W*sin(y(5)) + T + L*sin(alpha) - D*cos(alpha))/m; % Forward velocity
-ydot(4,1) = (W*cos(y(5)) - L*cos(alpha) - D*sin(alpha))/m; % Transverse velocity
-ydot(5,1) = y(6); % Pitch angle
-ydot(6,1) = -(xcp-xcg)*(L*cos(alpha) + D*sin(alpha))/I; % Pitch rate
+ydot(1,1) = y(3)*cos(y(5)) + y(4)*sin(y(5));                        % Downrange
+ydot(2,1) = -y(3)*sin(y(5)) + y(4)*cos(y(5));                       % -Altitude
+ydot(3,1) = (-W*sin(y(5)) + T + L*sin(alpha) - D*cos(alpha))/m;     % Forward velocity
+ydot(4,1) = (W*cos(y(5)) - L*cos(alpha) - D*sin(alpha))/m;          % Transverse velocity
+ydot(5,1) = y(6);                                                   % Pitch angle
+ydot(6,1) = -(xcp-xcg)*(L*cos(alpha) + D*sin(alpha))/I;             % Pitch rate
 dgm_ode(isnan(dgm_ode)) = 0;
-    if ((dgm_ode(2,1) && dgm_ode(2,2)) ~= 0)
-    ydot(7,1) = V_u_rng + ((dgm_ode(1,1)/dgm_ode(2,1))*r - (1/dgm_ode(2,1))*y(7));
-    ydot(8,1) = V_v_rng + ((dgm_ode(1,2)/dgm_ode(2,2))*r - (1/dgm_ode(2,2))*y(8));
+    if (dgm_ode(2,1) ~= 0)
+    ydot(7,1) = V_u_rng + (((dgm_ode(1,1))*r-y(7)))/(dgm_ode(2,1)*1000);
     else
     ydot(7,1) = windh;
-    ydot(8,1) = windv;
     end

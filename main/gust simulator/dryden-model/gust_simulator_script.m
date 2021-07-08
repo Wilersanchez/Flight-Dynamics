@@ -40,12 +40,15 @@ tspan = linspace(t0,tf,nsteps);
 %
 % Simulate launch for wind=0 m/s
 %
-windh = 5;
+windh = 5; % for some reason doesn't have an effect on the apogee.
 windv = 0;
-for i = 1:10
-    [t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0 0]);
+
+for i = 1:100
+    [t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
     apogee(i) = max(-y0(:,2));
 end
+
 apogee(0 == apogee) = nan;
-figure(5)
-histogram(apogee,20);
+figure(1)
+edges = 1300:10:1500;
+histogram(apogee,edges);

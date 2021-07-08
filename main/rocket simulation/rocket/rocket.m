@@ -37,20 +37,14 @@ tspan = linspace(t0,tf,nsteps);
 %
 windh = 1;
 windv = 0;
-for i = 1:100
-    [t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0 0]);
-    apogee(i) = max(-y0(:,2));
-end
-apogee(0 == apogee) = nan;
-figure(5)
-histogram(apogee,20);
+[t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
 
 %
 % Simulate launch for wind=10 m/s
 %
 windh = 9;
 windv = 0;
-[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0 0]);
+[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
 
 
 %

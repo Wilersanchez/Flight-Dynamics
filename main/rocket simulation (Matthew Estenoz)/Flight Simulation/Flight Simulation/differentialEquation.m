@@ -1,7 +1,9 @@
 function [xdot] = differentialEquation(t,x)
 %Inputs:
 %t - flight time (s)
-%x = [downrange distance (m), downrange velocity (m/s), altitude (m), vertical velocity (m/s), propellant mass (kg)]
+%x = [downrange distance (m), downrange velocity (m/s), altitude (m),
+%     vertical velocity (m/s), propellant mass (kg), 
+%     horizontal wind velocity (m/s), vertical wind velocity (m/s) ]
 %
 %Outputs:
 %xdot = [downrange velocity (m/s), downrange acceleration (m/s^2) , vertical velocity (m/s),
@@ -21,7 +23,7 @@ C_D_drogue = 1.16;                                  %drogue parachute drag coeff
 d_drogue = 0.61;                                    %drogue parachute diameter (m)
 C_D_main = 2.20;                                    %main parachute drag coefficient
 d_main = 2.13;                                      %main parachute diameter (m)
-windspeed = 5.81152;                                %average windspeed (m/s)
+windspeed = 5;                                      %average windspeed (m/s)
 I = 3489;                                           %total impuse (N*s)
 mu = 18.07E-6;                                      %dynamic viscosity (Pa*s)
 L = 3.5;                                            %rocket length (m)
@@ -48,11 +50,40 @@ A_motor = pi*dm^2/4;                                %motor reference area (m)
 T = T_ground - lapse_rate*x(3);
 
 %Determine Mach number
-M = x(4)/sqrt(gamma*R*T);
+M = x(4)./sqrt(gamma*R*T);
+
+% % %Dryden gust model
+% steadywindh = 5;                                    %steady horizontal wind speed (m/s)
+% steadywindv = 3;                                    %steady vertical wind speed (m/s)
+% 
+% %Generate limited bandwidth noise
+% ah = steadywindh-1;
+% bh = steadywindh+1;
+% rh = ((ah+(bh-ah))*randn(1,1));
+% 
+% av = steadywindv-1;
+% bv = steadywindv+1;
+% rv = ((av+(bv-av))*randn(1,1));
+% 
+% %Develop dryden gust model parameters
+% dgm_ode = (real(drydengustmodel_v2(x(3),x(2),x(4),'light')));
 
 %Normal force coefficient
-l = sqrt(cr^2+(s/2)^2);                             %fin half-chord (m)
-alpha = (windspeed+x(2))/x(4);                      %angle of attack (rad)
+l = sqrt(cr^2+(s/2)^2);      %fin half-chord (m)
+
+if (t == 0)
+    x(6) = launch_angle;
+    alpha = x(6);
+else
+	if isinf(x(6)) || isnan(x(6))
+	    x(6) = launch_angle;
+	end
+    alpha = atan((windspeed + x(2))/(x(4)));    %angle of attack (rad)
+end
+
+% if isinf(alpha) || isnan(alpha) || (alpha == 0)
+%     alpha = pi/2;
+% end
 C_N_nose = 2*alpha;
 C_N_fins = alpha*16*(s/d)^2/(1+sqrt(1+(2*l/(cr+ct))^2));
 C_N = C_N_nose + C_N_fins;
@@ -98,8 +129,19 @@ if thrust == 0 && x(3) <= payload_altitude && x(4) < 0
 end
 
 %State-space representation
-xdot = [x(2);(thrust*sin(launch_angle))/m;x(4);(thrust*cos(launch_angle)-m*g-.5*rho*x(4)^2*C_D*A)/m;-x(5)*thrust/I];
-%Accounts for delay before liftoff
+xdot = [x(2);(thrust*sin(x(6)))/m;x(4);(thrust*cos(x(6))-m*g-.5*rho*x(4)^2*C_D*A)/m;-x(5)*thrust/I;x(6)];
+
+%     (((dgm_ode(1,1)/dgm_ode(2,1))*rh - (1/dgm_ode(2,1))*x(6))); ...
+%     (((dgm_ode(1,2)/dgm_ode(2,2))*rv - (1/dgm_ode(2,2))*x(7)))];
+% %Rid of nan values
+% if isnan(xdot(6)) || isnan(xdot(7))
+%     xdot(6) = 0;
+%     xdot(7) = 0;
+% else
+%     xdot(6) = real(xdot(6));
+%     xdot(7) = real(xdot(7));
+% end
+% %Accounts for delay before liftoff
 if xdot(4) <= 0 && thrust ~= 0
     xdot(2) = 0;
     xdot(4) = 0;

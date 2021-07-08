@@ -74,10 +74,10 @@ if h ~= 0
     L_v = 1750/2;
     end   
 
-    % LINEAR u COMPONENT
-    A = [sigma_u*sqrt((2*L_u/pi/V_u)); L_u/V_u; 0; 0];
-    % LINEAR v COMPONENT
-    B = [sigma_v*sqrt((2*L_v/pi/V_v)); 2*sqrt(3)*(L_v/V_v); (2*L_v/V_v)^2; (4*L_v)/V_v];
+    % LINEAR u COMPONENT (longitudinal)
+    A = [sigma_u*sqrt((2*L_u/(pi*V_u))); L_u/V_u; 0; 0];
+    % LINEAR v COMPONENT (lateral)
+    B = [sigma_v*sqrt((2*L_v/(pi*V_v))); 2*sqrt(3)*(L_v/V_v); (2*L_v/V_v)^2; (4*L_v)/V_v];
 else
     A = [0;0;0;0];
     B = [0;0;0;0];
