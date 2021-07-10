@@ -11,9 +11,8 @@ global alphadata;
 global CLfindata1;
 global CLfindata2;
 global CDfindata;
-% global bdp;                         % Barrowman design parameters
-% bdp = readmatrix('Cp_MinieMagg.csv');
-tdata = csvread('Simulation Thrust.csv', 0, 0, [0 0 97 0]);
+simproperties = 
+tdata = readmatrix('Simulation Thrust.csv', 0, 0, [0 0 97 0]);
 Tdata = csvread('Simulation Thrust.csv', 0, 1, [0 1 97 1]);
 mdata = csvread('Simulation Propellant Mass.csv', 0, 1, [0 1 97 1]);
 alphadata = csvread('NACA 0012 Cl.csv', 0, 3, [0 3 27 3]);
@@ -37,14 +36,14 @@ tspan = linspace(t0,tf,nsteps);
 %
 windh = 1;
 windv = 0;
-[t0,y0] = ode45(@rocket_ode,tspan,[1 1 1 1 pi/2 1 1]);
+[t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
 
 %
 % Simulate launch for wind=10 m/s
 %
 windh = 900000;
 windv = 0;
-[t1,y1] = ode45(@rocket_ode,tspan,[1 1 50 1 pi/2 1 1]);
+[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
 
 
 %

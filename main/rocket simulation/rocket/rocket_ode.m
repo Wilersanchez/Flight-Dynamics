@@ -3,32 +3,56 @@ function ydot = rocket_ode(t,y)
 %         velocity, pitch angle, pitch rate, forward dyrden gust velocity]
 
 
-%% wind components (m/s)
-%
-global windh;
-global windv;
-
 %% define constants
 %
 g = 9.80665;                % gravitational acceleration (m/s^2) (assume constant for all altitudes)
 [rho,temp,pressure] = rocket_var_stdatm(-y(2));  % Variable density, temperature, and pressure of air
 
 %% IREC rocket properties 
-xcp = 2.66;                 % distance from nose to center of pressure (m)
-xcg = 2.32;                 % distance from nose to center of gravity (m)
-I = 230.499;                % moment of inertia (kg*m^2) (assume constant)
-dfus = 0.14;                % diameter of fuselage (m) 
-mMinusPropellant = 14.659;  % mass of rocket without propellant (kg)
+xcp = 2.46;                 % distance from nose to center of pressure (m)
+xcg = 2.00;                 % distance from nose to center of gravity (m)
+I = 348.2;                  % moment of inertia (kg*m^2) (assume constant)
+dfus = 0.157;               % diameter of fuselage (m) 
+
+% mass of rocket segmented by seperate body tubes 
+m_avbaycoupler = 750; m_avionics = 1991; m_nosecone = 2495;
+m_(1) = m_avbaycoupler + m_avionics + m_nosecone;
+
+m_avbayswitchband = 71.1;
+m_(2) = m_avbayswitchband;
+
+m_upperbodytube = 1422; m_avbaybulkhead = 161; m_shockcord = 794; 
+m_96main = 473; m_36drogue = 204;
+m_(3) =  m_upperbodytube + m_avbaybulkhead + m_shockcord + m_96main + ...
+    + m_36drogue;
+
+m_bodytube1 = 49.3;
+m_(4) = m_bodytube1;
+
+m_bodytube2 = 690; m_payloadcoupler = 875; m_payload = 4001; 
+m_bulkhead = 161;
+m_(5) = m_bodytube2 + m_payloadcoupler +  m_payload + m_bulkhead*2;
+
+m_bodytube3 = 49.3;
+m_(6) = m_bodytube3;
+
+m_aftbodytube = 2069; m_activecontrolcoupl = 875; m_activebulkhead = 161; 
+m_activecontrol = 1787; m_motortube = 902; m_ring = 177; m_fins = 1820; 
+m_cring = 229;
+m_(7) = m_aftbodytube + m_activecontrolcoupl + m_activebulkhead*2 ...
+    + m_activecontrol + m_motortube + m_ring*3 + m_fins + m_cring;
+
+m_rocket = sum(m_(1:7))/1000; % mass of rocket without propellant (kg)
 
 %% compute reference area for fuselage (m^2)
 A = pi*(dfus/2)^2;
 
 %% define fin planform dimensions (m)
-fin_span  = 0.127;  % fin span (root to tip)
-fin_chord = 0.1905; % mean fin chord length
+ct = 0.406;   % fin root to tip
+cr = 0.152;   % fin tip
 
 %% compute planform area for fin (m^2)
-S = fin_span * fin_chord;
+S = pi * ct * cr;
 
 %% dryden gust model test
 dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'moderate')));
@@ -39,7 +63,6 @@ w = y(4);       %transverse velocity
 
 %% compute total velocity (m/s)
 V = sqrt(u^2 + w^2);
-V_u_rng = y(7) + windh; %dryden gust velocity + global steady wind speed
 
 %% compute angle of attack (radians)
 % (set angle of attack to pi/2 when forward velocity is 0 to avoid divide-by-zero error);
@@ -67,10 +90,10 @@ D = .5*rho*V^2*(A*(CDofus + CDafus*(alpha*180/pi)) ...
 
 %% generate the thrust and mass of propellant
 T  = rocket_thrust(t);
-mp = rocket_mass(t);
+m_motorpropellent = rocket_mass(t);
 
 %% generate weight
-m = mp + mMinusPropellant;
+m = m_motorpropellent + m_rocket;
 W = m*g;
 
 %% Computing mach number

@@ -3,6 +3,7 @@ function [T] = rocket_thrust(t)
 %
 % Data for time (s) and thrust (N)
 %
+
 global simproperties;
 tdata = simproperties(:,2);
 Tdata = simproperties(:,4);

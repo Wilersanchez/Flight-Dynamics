@@ -3,10 +3,9 @@ function [mP] = rocket_mass(t)
 %
 % Data for time (s) and propellant mass (kg)
 %
-global tdata;
-global mdata;
-mdata = mdata/1000;
-
+global simproperties;
+tdata = simproperties(:,2);
+mdata = simproperties(:,3)/1000;
 
 %
 % Interpolate data to estimate propellant mass at any time
