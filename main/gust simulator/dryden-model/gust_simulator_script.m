@@ -32,7 +32,7 @@ global windh;
 %
 t0 = 0;
 tf = 15;
-nsteps = 1000;
+nsteps = 50;
 tspan = linspace(t0,tf,nsteps);
 
 %
