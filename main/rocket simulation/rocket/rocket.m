@@ -30,10 +30,12 @@ tspan = linspace(t0,tf,nsteps);
 %
 % Simulate launch for wind=10 m/s
 %
-[t1,y1] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
+[t1,y1] = ode45(@rocket_ode,tspan,[0 0 10 10 pi/2 0 0]);
 
-
-[t2,y2] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
+%
+%Simulate launch for wind=20 m/s
+%
+[t2,y2] = ode45(@rocket_ode,tspan,[0 0 20 20 pi/2 0 0]);
 
 %
 % Convert altitude/velocity from meters to feet
@@ -55,9 +57,9 @@ y2(:,1:4) = y2(:,1:4)/.3048;
 [apogee0,index0] = max(-y0(:,2));
 [apogee1,index1] = max(-y1(:,2));
 [apogee2,index2] = max(-y2(:,2));
-disp(['Apogee with wind v = 1  m/s ',num2str(apogee0),' (ft)']);
-disp(['Apogee with wind v = 2 m/s ',num2str(apogee1),' (ft)']);
-disp(['Apogee with wind v = 2 m/s ',num2str(apogee1),' (ft)']);
+disp(['Apogee with wind v = 0  m/s ',num2str(apogee0),' (ft)']);
+disp(['Apogee with wind v = 10 m/s ',num2str(apogee1),' (ft)']);
+disp(['Apogee with wind v = 20 m/s ',num2str(apogee1),' (ft)']);
 
 %
 % Only take data until apogee
@@ -79,43 +81,46 @@ figure(1)
 plot(y0(:,1),-y0(:,2),'k',y1(:,1),-y1(:,2),'r',y2(:,1),-y2(:,2),'b');
 xlabel('Downrange (ft)');
 ylabel('Altitude (ft)');
-legend('no wind','wind v = 10 m/s');
+legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
 
 
 %
 % Plot pitch angle
 %
 figure(2)
-plot(t0,y0(:,5),'k',t1,y1(:,5),'r');
+plot(t0,y0(:,5),'k',t1,y1(:,5),'r',t2,-y2(:,5),'b');
 xlabel('Time (s)');
 ylabel('Pitch Angle (deg)');
-legend('no wind','wind v = 10 m/s');
+legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
 
 
 %
 % Plot trajectory with time
 %
 figure(3)
-plot3(t0,y0(:,1),-y0(:,2),'k',t1,y1(:,1),-y1(:,2),'r');
+plot3(t0,y0(:,1),-y0(:,2),'k',t1,y1(:,1),-y1(:,2),'r',...
+    t2,y2(:,1),-y2(:,2),'b');
 xlabel('Time (s)');
 ylabel('Downrange (ft)');
 zlabel('Altitude (ft)');
-legend('no wind','wind v = 10 m/s');
+legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
 
 
 %
 % Plot velocity
 %
 figure(4)
-plot(t0,y0(:,3),'k',t1,y1(:,3),'r')
+plot(t0,y0(:,3),'k',t1,y1(:,3),'r',t2,y2(:,3),'b')
 xlabel('Time (s)');
 ylabel('Forward Velocity (m/s)');
-legend('no wind','wind v = 10 m/s');
+legend('no wind','wind v = 10 m/s','wind v = 20 m/s');
 
 %
 % plot altitude vs. time
 %
 figure(5)
-plot(t2,-y2(:,2));
-
+plot(t0,-y0(:,2),'k',t1,-y1(:,2),'r',t2,-y2(:,2),'b');
+xlabel('Altitude (m)');
+ylabel('Time (s)');
+legend('no wind','wind v = 10 m/s', 'wind v = 20 m/s');
 toc
