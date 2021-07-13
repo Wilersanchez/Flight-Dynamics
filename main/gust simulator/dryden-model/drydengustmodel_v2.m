@@ -1,8 +1,8 @@
 % dryden gust model specified for rockets
 %
 % input = h (altitude)
-%         V_u (airspeed of rocket, u-component)
-%         V_v (airspeed of rocket, v-component)
+%         V_u (airspeed of rocket, u-component, forward velocity)
+%         V_v (airspeed of rocket, v-component, transverse velocity)
 %         intensity (turbelence intensity classified as 'light',
 %         'moderate', or 'severe')
 %

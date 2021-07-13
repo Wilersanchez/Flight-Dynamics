@@ -81,7 +81,7 @@ CDafus = 0.1;                   % CDalpha for fuselage
 [CLfin, CDfin] = rocket_fin_coefficients(alpha);    % CL and CD for fins
 
 %% compute lift using fin and fuselage aerodynamics
-L = .5*rho*V^2*(A*(CLofus + CLafus*(alpha*180/pi))  ...
+L = .5*rho*(V^2)*A*((CLofus + CLafus*(alpha*180/pi))  ... %This as well as the drag may have to be reviewed
            + S*CLfin);
 
 %% compute drag using fin and fuselage aerodynamics
@@ -117,7 +117,7 @@ ydot(2,1) = -y(3)*sin(y(5)) + y(4)*cos(y(5));                       % -Altitude
 ydot(3,1) = (-W*sin(y(5)) + T + L*sin(alpha) - D*cos(alpha))/m;     % Forward velocity
 ydot(4,1) = (W*cos(y(5)) - L*cos(alpha) - D*sin(alpha))/m;          % Transverse velocity
 ydot(5,1) = y(6);                                                   % Pitch angle
-ydot(6,1) = -(xcp-xcg)*(L*cos(alpha) + D*sin(alpha))/I;             % Pitch rate
+ydot(6,1) = -((xcp-xcg)*(L*cos(alpha) + D*sin(alpha)))/I;           % Pitch rate
 dgm_ode(isnan(dgm_ode)) = 0;                                        % Gust
     if (dgm_ode(2,1) ~= 0)
     ydot(7,1) =(((dgm_ode(1,1))*r-y(7)))/(dgm_ode(2,1)*1000);
