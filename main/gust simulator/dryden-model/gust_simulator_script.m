@@ -3,7 +3,7 @@ clc; clear; close all; tic
 
 %
 % Initialize time (s), thrust (N), propellant mass (g), angle of attack (deg), and aerodynamic
-% coefficients data for Aerotech L1150 and NACA 0012
+% coefficients data for Aerotech M2500T and NACA 0012
 %
 
 global alphadata;
