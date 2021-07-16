@@ -30,7 +30,7 @@ thrust_data = csvread('Simulation Thrust.csv',0,1,[0 1 97 1]);
 
 %Solve equations of motion
 tspan = [0 100];
-x0 = [0;0;0;0;m_propellant; (4)*pi/180];
+x0 = [0;0;0;0;m_propellant;0];
 [t,y] = ode45(@differentialEquation,tspan,x0);
 
 %Remove data after landing

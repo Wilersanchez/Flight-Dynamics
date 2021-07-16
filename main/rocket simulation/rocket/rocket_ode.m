@@ -58,8 +58,8 @@ S = pi * ct * cr;
 dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'moderate')));
 
 %% compute body-fixed axis velocities (m/s)
-u = y(3) + y(7)*10000; %forward velocity
-w = y(4);       %transverse velocity
+u = y(3) + y(7)*10000;  %forward velocity
+w = y(4);               %transverse velocity
 
 %% compute total velocity (m/s)
 V = sqrt(u^2 + w^2);
@@ -81,7 +81,7 @@ CDafus = 0.1;                   % CDalpha for fuselage
 [CLfin, CDfin] = rocket_fin_coefficients(alpha);    % CL and CD for fins
 
 %% compute lift using fin and fuselage aerodynamics
-L = .5*rho*(V^2)*A*((CLofus + CLafus*(alpha*180/pi))  ... %This as well as the drag may have to be reviewed
+L = .5*rho*(V^2)*(A*(CLofus + CLafus*(alpha*180/pi))  ... %This as well as the drag may have to be reviewed
            + S*CLfin);
 
 %% compute drag using fin and fuselage aerodynamics
