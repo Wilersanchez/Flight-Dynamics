@@ -30,26 +30,26 @@ tspan = linspace(t0,tf,nsteps);
 %
 % Simulate launch for wind=10 m/s
 %
-[t1,y1] = ode45(@rocket_ode,tspan,[0 0 10 10 pi/2 0 0]);
+[t1,y1] = ode45(@rocket_ode,tspan,[0 0 10 0 pi/2 0 0]);
 
 %
 %Simulate launch for wind=20 m/s
 %
-[t2,y2] = ode45(@rocket_ode,tspan,[0 0 20 20 pi/2 0 0]);
+[t2,y2] = ode45(@rocket_ode,tspan,[0 0 20 0 pi/2 0 0]);
 
 %
 % Convert altitude/velocity from meters to feet
 
-y0(:,1:4) = y0(:,1:4)/.3048;
-y1(:,1:4) = y1(:,1:4)/.3048;
-y2(:,1:4) = y2(:,1:4)/.3048;
+y0(:,1:4) = y0(:,1:4);
+y1(:,1:4) = y1(:,1:4);
+y2(:,1:4) = y2(:,1:4);
 
 %
 % Convert angles/rates from radians to degrees
 %
 y0(:,5:6) = y0(:,5:6)*180/pi;
 y1(:,5:6) = y1(:,5:6)*180/pi;
-y2(:,1:4) = y2(:,1:4)/.3048;
+y2(:,5:6) = y2(:,5:6)*180/pi;
 
 %
 % Compute maximum altitude
@@ -57,9 +57,9 @@ y2(:,1:4) = y2(:,1:4)/.3048;
 [apogee0,index0] = max(-y0(:,2));
 [apogee1,index1] = max(-y1(:,2));
 [apogee2,index2] = max(-y2(:,2));
-disp(['Apogee with wind v = 0  m/s ',num2str(apogee0),' (ft)']);
-disp(['Apogee with wind v = 10 m/s ',num2str(apogee1),' (ft)']);
-disp(['Apogee with wind v = 20 m/s ',num2str(apogee1),' (ft)']);
+disp(['Apogee with wind v = 0  m/s ',num2str(apogee0),' (m)']);
+disp(['Apogee with wind v = 10 m/s ',num2str(apogee1),' (m)']);
+disp(['Apogee with wind v = 20 m/s ',num2str(apogee1),' (m)']);
 
 %
 % Only take data until apogee
