@@ -52,7 +52,7 @@ windlower = -5;
 %
 % Amount of simulations
 %
-ii = 1000;
+ii = 10;
 
 apogee = zeros(ii,1);
 for i = 1:ii

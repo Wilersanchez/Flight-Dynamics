@@ -26,13 +26,15 @@ tf = 50;
 nsteps = 1000;
 tspan = linspace(t0,tf,nsteps);
 
-for i = 1:10
+for i = 1:1000
     [t0,y0] = ode45(@rocket_ode,tspan,[0 0 0 0 pi/2 0 0]);
     apogee(i) = max(-y0(:,2));
 end
 
 apogee(0 == apogee) = nan;
-figure(1)
-edges = 2500:1:2750;
+figure(2)
+edges = 2400:1:2900;
 histogram(apogee,edges);
+title('Apogee Histogram Severe Turbulence Intensity');
+ylabel('# of Times Apogee Reached'); xlabel('Apogee [m]');
 toc

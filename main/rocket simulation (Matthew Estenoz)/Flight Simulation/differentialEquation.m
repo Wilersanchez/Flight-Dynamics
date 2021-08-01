@@ -56,7 +56,7 @@ M = x(4)/sqrt(gamma*R*T);
 dgm_ode = (real(drydengustmodel_v2(x(3),x(2),x(4),'severe')));
 
 %Normal force coefficient
-l = sqrt(cr^2+(s/2)^2);                             %fin half-chord (m)
+l = sqrt(cr^2+(s/2)^2);                              %fin half-chord (m)
 alpha = (x(6)*10000+x(2))/x(4);                      %angle of attack (rad)
 C_N_nose = 2*alpha;
 C_N_fins = alpha*16*(s/d)^2/(1+sqrt(1+(2*l/(cr+ct))^2));

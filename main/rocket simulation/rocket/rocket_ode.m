@@ -52,10 +52,10 @@ ct = 0.406;   % fin root to tip
 cr = 0.152;   % fin tip
 
 %% compute planform area for fin (m^2)
-S = pi * ct * cr;
+S = 3*l(pi * ct * cr);
 
 %% dryden gust model test
-dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'moderate')));
+dgm_ode = (real(drydengustmodel_v2(-y(2),y(3),y(4),'severe')));
 
 %% compute body-fixed axis velocities (m/s)
 u = y(3) + y(7)*10000; %forward velocity (review 10000 constant here and the 1000 below in dgm)
@@ -107,8 +107,8 @@ if y(2) > 1
 end
 
 %% generate limited bandwidth noise
-a = -2;
-b = 2;
+a = -5;
+b = 5;
 r = (b-a)*rand(1,1)+a;
 
 %% generate state derivatives
