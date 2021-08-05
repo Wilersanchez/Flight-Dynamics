@@ -27,6 +27,7 @@ mu = 18.07E-6;                                      %dynamic viscosity (Pa*s)
 L = 3.5;                                            %rocket length (m)
 R_s = 100E-5;                                       %surface roughness (m)
 
+global turbulence_intensity; 
 global windupper;
 global windlower;
 global main_altitude;                               %declare main parachute deployment altitude
@@ -53,7 +54,7 @@ T = T_ground - lapse_rate*x(3);
 M = x(4)/sqrt(gamma*R*T);
 
 % dryden gust model test
-dgm_ode = (real(drydengustmodel_v2(x(3),x(2),x(4),'severe')));
+dgm_ode = (real(drydengustmodel_v2(x(3),x(2),x(4),turbulence_intensity)));
 
 %Normal force coefficient
 l = sqrt(cr^2+(s/2)^2);                              %fin half-chord (m)
@@ -103,15 +104,14 @@ if thrust == 0 && x(3) <= payload_altitude && x(4) < 0
 end
 
 %State-space representation
-xdot = [x(2)+x(6)*10000;(thrust*sin(launch_angle))/m;x(4);(thrust*cos(launch_angle)-m*g-.5*rho*x(4)^2*C_D*A)/m;-x(5)*thrust/I];
-
+xdot = [x(2)+x(6)*10000;(thrust*sin(launch_angle))/m;x(4);(thrust*cos(launch_angle)-m*g-.5*rho*x(4)^2*C_D*A)/m;-x(5)*thrust/I;0];
 %Generate limited bandwidth noise
 a = windlower;
 b = windupper;
 r = (b-a)*rand(1,1)+a;
 
 %State derivative for the dryden gust model
-dgm_ode(isnan(dgm_ode)) = 0;                                        % Gust
+dgm_ode(isnan(dgm_ode)) = 0;        % Gust
     if (dgm_ode(2,1) ~= 0)
     xdot(6) =(((dgm_ode(1,1))*r-x(6)))/(dgm_ode(2,1)*1000);
     else

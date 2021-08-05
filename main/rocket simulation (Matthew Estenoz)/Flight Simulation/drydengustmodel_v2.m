@@ -20,15 +20,15 @@ kts2mps = 0.5144; % knots to meters per second
 % intensity classification
 %
 
-light = 'light';
-moderate = 'moderate';
-severe = 'severe';
+light = 1;
+moderate = 2;
+severe = 3;
 
-if strcmp(light,intensity)
+if (light == intensity)
     W_20ft = 15*kts2mps; % W_20ft is the wind speed at 20 feet
-elseif strcmp(moderate,intensity)
+elseif (moderate == intensity)
     W_20ft = 30*kts2mps; 
-elseif strcmp(severe,intensity)
+elseif (severe == intensity)
     W_20ft = 45*kts2mps; 
 else
     error("Unknown turbulence classification");

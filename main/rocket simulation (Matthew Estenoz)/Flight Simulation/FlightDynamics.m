@@ -1,5 +1,7 @@
 clc; clear; close all;
 
+global windupper;
+global windlower;
 global max_acceleration;%declare max acceleration
 global m_empty;         %declare unloaded mass of rocket
 global rail_length;     %declare rail length
@@ -27,6 +29,12 @@ global time_data;
 time_data = csvread('Simulation Thrust.csv',0,0,[0 0 97 0]);
 global thrust_data;
 thrust_data = csvread('Simulation Thrust.csv',0,1,[0 1 97 1]);
+
+%
+% Initialize upper and lower wind values for bandwidth
+%
+windupper = 5; 
+windlower = -5;
 
 %Solve equations of motion
 tspan = [0 100];
